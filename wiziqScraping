@@ -1,0 +1,32 @@
+<?php
+$data = array(
+              '__VIEWSTATE' => '/wEPDwULLTE4NzQ1NDc3NDlkZAKoPgWi6thJiwSIGag/qv/Lfz9KaFLkiIAio0ruuPiM',
+              'txtAccessKeyVal' => 'Access_Key',
+              'txtScrtkeyVal' => 'Secret_key',
+              'drpMethodName' => 'get_attendance_report',
+              'txtCourseIDValue' => '4209555',
+              'txtCourseID'=>'class_id',
+              'btnGenerateSignature'=>'Call API',
+              'php_master' => true
+          );
+
+        $curl = curl_init("http://api.wiziq.com/classclient/Default2.aspx");
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $page = curl_exec($curl);
+        if(curl_errno($curl)) // check for execution errors
+		{
+			echo 'Error: ' . curl_error($curl);
+			exit;
+		}
+		 
+		curl_close($curl);
+		 
+		$regex = '/<div id="divIframe" style="background-color:#F0F8FF">(.*?)<\/div>/s';
+		if ( preg_match($regex, $page, $list) )
+		    echo $list[0];
+		else 
+		    print "Not found"; 
+?>
